@@ -96,3 +96,42 @@ BEGIN
 END //
 DELIMITER ;
 
+
+-- 9
+
+DELIMITER //
+CREATE PROCEDURE sp_AutorMaisAntigo(OUT autor_mais_antigo_nome VARCHAR(255))
+BEGIN
+    DECLARE autor_id INT;
+    DECLARE autor_nome VARCHAR(255);
+    DECLARE autor_sobrenome VARCHAR(255);
+
+    DECLARE cur CURSOR FOR
+        SELECT Autor_ID, Nome, Sobrenome
+        FROM Autor
+        ORDER BY Data_Nascimento ASC
+        LIMIT 1;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET @no_more_rows = TRUE;
+
+    SET @no_more_rows = FALSE;
+
+    START TRANSACTION;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO autor_id, autor_nome, autor_sobrenome;
+        IF @no_more_rows THEN
+            LEAVE read_loop;
+        END IF;
+    END LOOP;
+
+    CLOSE cur;
+
+    COMMIT;
+
+    SET autor_mais_antigo_nome = CONCAT(autor_nome, ' ', autor_sobrenome);
+END //
+DELIMITER ;
+
