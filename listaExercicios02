@@ -36,3 +36,12 @@ BEGIN
     SET possui_livros = (total > 0);
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_LivrosAteAno(IN ano_publicacao INT)
+BEGIN
+    SELECT * FROM Livro
+    WHERE Ano_Publicacao <= ano_publicacao;
+END //
+DELIMITER ;
+
