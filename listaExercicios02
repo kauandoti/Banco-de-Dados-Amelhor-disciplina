@@ -68,7 +68,7 @@ BEGIN
 END //
 DELIMITER ;
 
-// 8
+// 7
 DELIMITER //
 CREATE PROCEDURE sp_AdicionarLivro(IN titulo_livro VARCHAR(255), IN editora_id INT, IN ano_publicacao INT, IN numero_paginas INT, IN categoria_id INT)
 BEGIN
@@ -83,4 +83,16 @@ BEGIN
 END //
 DELIMITER ;
 
+// 8
+
+DELIMITER //
+CREATE PROCEDURE sp_AutorMaisAntigo(OUT autor_mais_antigo_nome VARCHAR(255))
+BEGIN
+    SELECT CONCAT(Nome, ' ', Sobrenome)
+    INTO autor_mais_antigo_nome
+    FROM Autor
+    ORDER BY Data_Nascimento ASC
+    LIMIT 1;
+END //
+DELIMITER ;
 
